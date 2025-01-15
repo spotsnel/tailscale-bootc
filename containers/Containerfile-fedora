@@ -8,3 +8,5 @@ RUN dnf config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stable
         tailscale \
     && dnf clean all \
     && systemctl enable tailscaled
+
+RUN [ -f /usr/bin/bootc ] && bootc container lint

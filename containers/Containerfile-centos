@@ -5,6 +5,8 @@ FROM ${BASE_IMAGE}:${BASE_VERSION}
 
 RUN dnf config-manager --add-repo https://pkgs.tailscale.com/stable/centos/9/tailscale.repo \
     && dnf -y install \
-        tailscale \
+        systemd tailscale \
     && dnf clean all \
     && systemctl enable tailscaled
+
+RUN [ -f /usr/bin/bootc ] && bootc container lint
