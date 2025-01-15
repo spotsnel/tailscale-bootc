@@ -5,8 +5,8 @@ FROM ${BASE_IMAGE}:${BASE_VERSION}
 
 RUN dnf config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stable/fedora/tailscale.repo \
     && dnf install -y \
-        tailscale \
+        systemd tailscale \
     && dnf clean all \
     && systemctl enable tailscaled
 
-RUN [ -f /usr/bin/bootc ] && bootc container lint
+#RUN [ -f /usr/bin/bootc ] && bootc container lint

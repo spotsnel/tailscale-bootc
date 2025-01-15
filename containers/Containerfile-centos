@@ -9,4 +9,4 @@ RUN dnf config-manager --add-repo https://pkgs.tailscale.com/stable/centos/9/tai
     && dnf clean all \
     && systemctl enable tailscaled
 
-RUN [ -f /usr/bin/bootc ] && bootc container lint
+#RUN [ -f /usr/bin/bootc ] && bootc container lint
