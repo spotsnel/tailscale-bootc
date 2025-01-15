@@ -1,0 +1,10 @@
+ARG BASE_IMAGE="quay.io/fedora/fedora"
+ARG BASE_VERSION="41"
+
+FROM ${BASE_IMAGE}:${BASE_VERSION}
+
+RUN dnf config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stable/fedora/tailscale.repo \
+    && dnf install -y \
+        tailscale \
+    && dnf clean all \
+    && systemctl enable tailscaled

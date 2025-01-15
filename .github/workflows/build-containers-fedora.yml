@@ -1,0 +1,35 @@
+name: build containers (fedora)
+run-name: building containers (fedora)
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Run podman build - (fedora) base
+        run: |
+          podman build -t ghcr.io/spotsnel/tailscale/fedora:latest \
+            --build-arg=BASE_IMAGE="quay.io/fedora/fedora" \
+            --build-arg=BASE_VERSION="41" \
+            -f containers/Containerfile-fedora .
+      - name: Run podman build - (fedora-bootc) base
+        run: |
+          podman build -t ghcr.io/spotsnel/tailscale/fedora-bootc:latest \
+            --build-arg=BASE_IMAGE="quay.io/fedora/fedora-bootc" \
+            --build-arg=BASE_VERSION="41" \
+            -f containers/Containerfile-fedora .
+      - name: Push image to ghcr.io - (fedora) base
+        run: |
+          podman push --creds=${{ github.actor }}:${{ secrets.GITHUB_TOKEN }} \
+            ghcr.io/spotsnel/tailscale/fedora:latest
+      - name: Push image to ghcr.io - (fedora-bootc) base
+        run: |
+          podman push --creds=${{ github.actor }}:${{ secrets.GITHUB_TOKEN }} \
+            ghcr.io/spotsnel/tailscale/fedora-bootc:latest
